@@ -1,62 +1,29 @@
-<div class="row">
-    <div class="col-md-12">
-        <h1><%= title %></h1>
-        <p class="lead"><%= description %></p>
-    </div>
+<div>
+    <h2>Données Bitcoin - 24 dernières heures</h2>
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+            <th>Volume</th>
+        </tr>
+        <% if (data && data.length > 0) { %>
+            <% data.forEach(function(row) { %>
+                <tr>
+                    <td><%= new Date(row.timestamp).toLocaleString() %></td>
+                    <td><%= row.open %></td>
+                    <td><%= row.high %></td>
+                    <td><%= row.low %></td>
+                    <td><%= row.close %></td>
+                    <td><%= row.volume %></td>
+                </tr>
+            <% }); %>
+        <% } else { %>
+            <tr>
+                <td colspan="6">Aucune donnée disponible</td>
+            </tr>
+        <% } %>
+    </table>
 </div>
-
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" data-timeframe="1h">1H</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-timeframe="4h">4H</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-timeframe="1d">1D</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div id="chart"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const crypto = '<%= crypto %>';
-let chart;
-
-async function loadData(timeframe) {
-    try {
-        const response = await fetch(`/api/crypto/${crypto}/${timeframe}`);
-        const data = await response.json();
-        // TODO: Mettre à jour le graphique avec les données
-        console.log(data);
-    } catch (error) {
-        console.error('Error loading data:', error);
-    }
-}
-
-document.querySelectorAll('[data-timeframe]').forEach(tab => {
-    tab.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // Mise à jour des onglets actifs
-        document.querySelectorAll('[data-timeframe]').forEach(t => t.classList.remove('active'));
-        e.target.classList.add('active');
-        
-        // Chargement des données
-        loadData(e.target.dataset.timeframe);
-    });
-});
-
-// Chargement initial des données 1h
-loadData('1h');
-</script>
