@@ -1,0 +1,21 @@
+# Node.js dependencies
+node_modules/
+
+# Databases files
+*.db
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
